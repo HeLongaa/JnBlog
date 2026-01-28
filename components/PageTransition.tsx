@@ -4,18 +4,21 @@ import { AnimatePresence, motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { useRef, useEffect } from "react";
 
-const pages = ["/", "/about", "/blog", "/projects", "/links", "/tags"];
+const pages = ["/", "/about", "/blog", "/projects", "/links"];
 
 // Track previous path using ref instead of global object
 
 function getPageIndex(pathname: string) {
+  // Normalize path: remove trailing slash unless it's just "/"
+  const cleanPath = pathname === '/' ? '/' : pathname.replace(/\/$/, '');
+
   // Check exact match first
-  let index = pages.indexOf(pathname);
+  let index = pages.indexOf(cleanPath);
   if (index !== -1) return index;
 
   // Check starts with for nested routes (e.g. /blog/slug)
-  if (pathname.startsWith("/blog/")) return 2.1; 
-  
+  if (cleanPath.startsWith("/blog/")) return 2.1;
+
   return -1;
 }
 
@@ -49,7 +52,7 @@ export default function PageTransition({ children }: { children: React.ReactNode
   };
 
   const direction = getDirection();
-  
+
   // Update ref AFTER render using useEffect to avoid mutation during render
   // This ensures the current render uses the old value, and subsequent renders use the new value
   useEffect(() => {
@@ -67,7 +70,7 @@ export default function PageTransition({ children }: { children: React.ReactNode
         return { opacity: 0, x: 0 };
       }
       return {
-        x: direction > 0 ? 1000 : -1000,
+        x: direction > 0 ? "100%" : "-100%",
         opacity: 0,
       };
     },
@@ -83,10 +86,14 @@ export default function PageTransition({ children }: { children: React.ReactNode
       }
       return {
         zIndex: 0,
-        x: direction < 0 ? 1000 : -1000,
+        x: direction < 0 ? "100%" : "-100%",
         opacity: 0,
+        // popLayout handles position: absolute, but let's be explicit about dimensions
+        width: "100%",
         height: "100%",
-        overflow: "hidden"
+        overflow: "hidden",
+        top: 0, // Ensure it sticks to top
+        left: 0 // Ensure it sticks to left
       };
     },
   };
@@ -102,7 +109,7 @@ export default function PageTransition({ children }: { children: React.ReactNode
           animate="center"
           exit="exit"
           transition={{
-            x: direction === 0 ? { duration: 0 } : { type: "spring", stiffness: 300, damping: 30 },
+            x: direction === 0 ? { duration: 0 } : { type: "tween", ease: "circOut", duration: 0.5 },
             opacity: { duration: 0.3 },
             height: { duration: 0 } // Snap height immediately on exit
           }}

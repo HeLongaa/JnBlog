@@ -28,23 +28,23 @@ const components = {
   ),
   blockquote: (props: any) => (
     <div className="bg-slate-50 dark:bg-slate-900 py-3 px-4 rounded-md my-4 text-slate-700 dark:text-slate-300 leading-relaxed font-serif not-italic border-l-4 border-teal-500">
-        {props.children}
+      {props.children}
     </div>
   ),
   p: (props: any) => {
     // Check if the paragraph contains an ImageLightbox (which is a div)
     // If children is an object (React element) and has type ImageLightbox or img, render it directly without p wrapper
     const children = React.Children.toArray(props.children);
-    const hasImage = children.some((child: any) => 
-      child?.type === ImageLightbox || 
-      child?.props?.mdxType === 'img' || 
+    const hasImage = children.some((child: any) =>
+      child?.type === ImageLightbox ||
+      child?.props?.mdxType === 'img' ||
       (child?.props && typeof child.props === 'object' && 'src' in child.props && 'alt' in child.props)
     );
 
     if (hasImage) {
       return <>{props.children}</>;
     }
-    
+
     return <p className="mb-6 text-slate-700 dark:text-slate-300 leading-relaxed" {...props} />;
   },
   a: (props: any) => (
@@ -137,7 +137,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
   return (
     <main className="grow container mx-auto px-4 max-w-4xl py-10 relative">
       <TableOfContents />
-      
+
       <BlogNavUpdater currentSlug={slug} prevPost={adjacentPosts.prev} nextPost={adjacentPosts.next} />
 
       <article className="prose prose-slate dark:prose-invert max-w-none" id="article-content">
@@ -154,12 +154,12 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
             <span className="text-slate-400 dark:text-slate-500">•</span>
             <span>by {post.author}</span>
           </div>
-          
+
           {post.tags && post.tags.length > 0 && (
             <div className="flex flex-wrap gap-2 mt-4">
               {post.tags.map(tag => (
-                <Link 
-                  key={tag} 
+                <Link
+                  key={tag}
                   href={`/tags#${tag}`}
                   className="flex items-center text-xs font-medium text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 hover:bg-teal-50 dark:hover:bg-teal-900/50 hover:text-teal-600 dark:hover:text-teal-400 px-2.5 py-1 rounded-full transition-colors no-underline"
                 >
@@ -170,10 +170,10 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
             </div>
           )}
         </div>
-        
-        <MDXRemote 
-          source={post.content} 
-          components={components} 
+
+        <MDXRemote
+          source={post.content}
+          components={components}
           options={{
             mdxOptions: {
               remarkPlugins: [remarkGfm, remarkMath],
@@ -181,7 +181,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
             },
           }}
         />
-        
+
       </article>
       <CommentSection slug={slug} title={post.title} />
     </main>

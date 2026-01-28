@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
@@ -40,7 +39,7 @@ async function createPost() {
     
     const date = await question('请输入日期（格式: YYYY-MM-DD，留空使用今天）: ') || new Date().toISOString().split('T')[0];
     
-    const author = await question('请输入作者（留空使用默认: HeLong）: ') || blogConfig.author;
+    const author = await question('请输入作者（留空Undefined）: ') || 'undefined';
     
     // 生成文件名
     const slug = generateSlug();

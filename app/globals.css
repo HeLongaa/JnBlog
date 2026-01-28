@@ -20,6 +20,10 @@
   }
 }
 
+html {
+  scrollbar-gutter: stable;
+}
+
 @layer utilities {
   .liquid-glass {
     @apply relative overflow-hidden transition-all duration-300;

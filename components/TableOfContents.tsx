@@ -22,7 +22,7 @@ export default function TableOfContents() {
   const [activeId, setActiveId] = useState<string>("");
   const [isOpen, setIsOpen] = useState(false);
   const { isOpen: isLightboxOpen } = useLightbox();
-  
+
   // Dock states
   const [showCommentsBtn, setShowCommentsBtn] = useState(true);
   const [dockPortal, setDockPortal] = useState<HTMLElement | null>(null);
@@ -33,23 +33,41 @@ export default function TableOfContents() {
   }, []);
 
   useEffect(() => {
-    // Intersection Observer for Comments Section
-    const commentsSection = document.getElementById('comments');
-    if (!commentsSection) return;
+    const checkVisibility = () => {
+      // When lightbox is open, we don't want to change the state
+      if (isLightboxOpen) return;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        // When lightbox is open, we don't want to change the state
-        // because it might cause issues when restoring
-        if (!isLightboxOpen) {
-          setShowCommentsBtn(!entry.isIntersecting);
-        }
-      },
-      { threshold: 0.1 } // Hide when 10% of comments section is visible
-    );
+      const commentsSection = document.getElementById('comments');
+      if (!commentsSection) return;
 
-    observer.observe(commentsSection);
-    return () => observer.disconnect();
+      const rect = commentsSection.getBoundingClientRect();
+      const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+
+      // Check if comments section is visible in the viewport
+      // rect.top < windowHeight means the top of the element is visible
+      const isVisible = rect.top <= windowHeight;
+
+      setShowCommentsBtn(!isVisible);
+    };
+
+    // Check immediately
+    checkVisibility();
+
+    // Add scroll listener
+    window.addEventListener('scroll', checkVisibility, { passive: true });
+    window.addEventListener('resize', checkVisibility, { passive: true });
+
+    // Also check periodically for a short time to handle layout shifts/dynamic loading
+    const intervalId = setInterval(checkVisibility, 500);
+    // Stop checking after 3 seconds
+    const timeoutId = setTimeout(() => clearInterval(intervalId), 3000);
+
+    return () => {
+      window.removeEventListener('scroll', checkVisibility);
+      window.removeEventListener('resize', checkVisibility);
+      clearInterval(intervalId);
+      clearTimeout(timeoutId);
+    };
   }, [isLightboxOpen, pathname]);
 
   const scrollToComments = () => {
@@ -63,7 +81,7 @@ export default function TableOfContents() {
 
   useEffect(() => {
     setActiveId("");
-    
+
     // Find the article element
     const article = document.querySelector("article");
     if (!article) return;
@@ -76,7 +94,7 @@ export default function TableOfContents() {
     const updateActiveHeading = () => {
       const elements = article.querySelectorAll("h2, h3");
       let newActiveId = "";
-      
+
       // Find the last heading that's above the fold
       elements.forEach((element) => {
         const rect = element.getBoundingClientRect();
@@ -84,7 +102,7 @@ export default function TableOfContents() {
           newActiveId = element.id;
         }
       });
-      
+
       if (newActiveId !== currentActiveId) {
         currentActiveId = newActiveId;
         setActiveId(newActiveId);
@@ -107,10 +125,10 @@ export default function TableOfContents() {
       }));
 
       setHeadings(items);
-      
+
       // Initial update
       updateActiveHeading();
-      
+
       // Start listening to scroll events
       window.addEventListener('scroll', handleScroll, { passive: true });
     };
@@ -142,7 +160,7 @@ export default function TableOfContents() {
           // Re-initialize
           initTOC();
         }, 500);
-        
+
         return () => clearTimeout(timeout);
       }
     });

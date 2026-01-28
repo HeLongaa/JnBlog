@@ -1,8 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Bug, Info, ChevronLeft, Send, Smartphone, MapPin, FileText } from 'lucide-react';
+import { X, Bug, Info, ChevronLeft, Send, Smartphone, MapPin, FileText, Link as LinkIcon, ShieldAlert, Lock } from 'lucide-react';
 
 interface FeedbackModalProps {
   isOpen: boolean;
@@ -13,6 +14,7 @@ type ViewState = 'menu' | 'bug' | 'about';
 
 export default function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
   const [view, setView] = useState<ViewState>('menu');
+  const router = useRouter();
 
   // Reset view when closing
   React.useEffect(() => {
@@ -36,7 +38,7 @@ export default function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
 
   const handleSubmitBug = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     const formData = new FormData(e.currentTarget);
     const location = formData.get('location') as string;
     const device = formData.get('device') as string;
@@ -87,13 +89,13 @@ ${description}
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            transition={{ 
-              type: "spring", 
-              damping: 25, 
+            transition={{
+              type: "spring",
+              damping: 25,
               stiffness: 350,
               mass: 0.5
             }}
-            style={{ 
+            style={{
               willChange: "transform, opacity, height"
             }}
             className="fixed bottom-24 left-0 right-0 mx-auto w-[90vw] max-w-md bg-white/95 dark:bg-slate-900/80 backdrop-blur-xl border border-slate-300 dark:border-white/10 rounded-2xl z-101 overflow-hidden shadow-2xl shadow-black/10 dark:shadow-black/50 origin-bottom"
@@ -102,7 +104,7 @@ ${description}
             <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-white/5">
               <div className="flex items-center gap-2">
                 {view !== 'menu' && (
-                  <button 
+                  <button
                     onClick={() => setView('menu')}
                     className="p-1 -ml-2 rounded-full hover:bg-slate-100 dark:hover:bg-white/10 text-slate-500 dark:text-slate-400 transition-colors"
                   >
@@ -124,7 +126,7 @@ ${description}
             </div>
 
             {/* Content Area */}
-            <motion.div 
+            <motion.div
               layout
               className="px-6 overflow-hidden"
             >
@@ -180,23 +182,23 @@ ${description}
                         <label className="text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center gap-2">
                           <MapPin size={16} /> Location / Page
                         </label>
-                        <input 
-                          type="text" 
+                        <input
+                          type="text"
                           name="location"
-                          placeholder="e.g. Home page, Footer..." 
+                          placeholder="e.g. Home page, Footer..."
                           className="w-full px-4 py-2 rounded-lg bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-teal-500 outline-none transition-all"
                           required
                         />
                       </div>
-                      
+
                       <div className="space-y-2">
                         <label className="text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center gap-2">
                           <Smartphone size={16} /> Device / Browser
                         </label>
-                        <input 
-                          type="text" 
+                        <input
+                          type="text"
                           name="device"
-                          placeholder="e.g. iPhone 14, Chrome Desktop..." 
+                          placeholder="e.g. iPhone 14, Chrome Desktop..."
                           className="w-full px-4 py-2 rounded-lg bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-teal-500 outline-none transition-all"
                         />
                       </div>
@@ -208,10 +210,10 @@ ${description}
                             <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
                           </svg> Email (Optional)
                         </label>
-                        <input 
-                          type="email" 
+                        <input
+                          type="email"
                           name="email"
-                          placeholder="e.g. your@email.com" 
+                          placeholder="e.g. your@email.com"
                           className="w-full px-4 py-2 rounded-lg bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-teal-500 outline-none transition-all"
                         />
                       </div>
@@ -220,16 +222,16 @@ ${description}
                         <label className="text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center gap-2">
                           <FileText size={16} /> Description
                         </label>
-                        <textarea 
+                        <textarea
                           name="description"
-                          placeholder="Describe what happened..." 
+                          placeholder="Describe what happened..."
                           rows={3}
                           className="w-full px-4 py-2 rounded-lg bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-teal-500 outline-none transition-all resize-none"
                           required
                         />
                       </div>
 
-                      <button 
+                      <button
                         type="submit"
                         className="w-full mt-2 py-2.5 bg-teal-600 hover:bg-teal-700 text-white rounded-lg font-medium flex items-center justify-center gap-2 transition-colors"
                       >
@@ -246,15 +248,55 @@ ${description}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="flex flex-col items-center justify-center h-75 text-center py-6"
+                    className="grid gap-4 py-6"
                   >
-                    <div className="w-16 h-16 bg-slate-100 dark:bg-white/5 rounded-full flex items-center justify-center mb-4">
-                       <Info size={32} className="text-slate-400" />
-                    </div>
-                    <h4 className="text-lg font-medium text-slate-700 dark:text-slate-300">Coming Soon</h4>
-                    <p className="text-slate-500 dark:text-slate-400 mt-2 max-w-50">
-                      This section is currently under development. Stay tuned!
-                    </p>
+                    <button
+                      onClick={() => {
+                        onClose();
+                        router.push('/info/about-link');
+                      }}
+                      className="flex items-center gap-4 p-4 rounded-xl bg-slate-50 dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 border border-slate-200 dark:border-white/5 transition-all text-left group"
+                    >
+                      <div className="p-3 rounded-lg bg-sky-100 dark:bg-sky-500/20 text-sky-600 dark:text-sky-400 group-hover:scale-110 transition-transform">
+                        <LinkIcon size={24} />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-slate-800 dark:text-slate-100">About Link</h4>
+                        <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">External link policy</p>
+                      </div>
+                    </button>
+
+                    <button
+                      onClick={() => {
+                        onClose();
+                        router.push('/info/disclaimer');
+                      }}
+                      className="flex items-center gap-4 p-4 rounded-xl bg-slate-50 dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 border border-slate-200 dark:border-white/5 transition-all text-left group"
+                    >
+                      <div className="p-3 rounded-lg bg-amber-100 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 group-hover:scale-110 transition-transform">
+                        <ShieldAlert size={24} />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-slate-800 dark:text-slate-100">Disclaimer</h4>
+                        <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Legal disclaimer</p>
+                      </div>
+                    </button>
+
+                    <button
+                      onClick={() => {
+                        onClose();
+                        router.push('/info/privacy');
+                      }}
+                      className="flex items-center gap-4 p-4 rounded-xl bg-slate-50 dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 border border-slate-200 dark:border-white/5 transition-all text-left group"
+                    >
+                      <div className="p-3 rounded-lg bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 group-hover:scale-110 transition-transform">
+                        <Lock size={24} />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-slate-800 dark:text-slate-100">Privacy Policy</h4>
+                        <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Data privacy information</p>
+                      </div>
+                    </button>
                   </motion.div>
                 )}
               </AnimatePresence>

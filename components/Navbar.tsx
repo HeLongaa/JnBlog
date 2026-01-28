@@ -1,7 +1,7 @@
 "use client";
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
@@ -10,10 +10,12 @@ import { blogConfig } from '@/blog.config';
 
 export default function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  
+
   const isBlogPost = pathname.startsWith('/blog/') && pathname !== '/blog';
-  
+  const isInfoPage = pathname.startsWith('/info/');
+
   const navLinks = [
     { href: '/about', label: 'About' },
     { href: '/blog', label: 'Blog' },
@@ -46,27 +48,34 @@ export default function Navbar() {
             <Link href="/blog" className="text-xl font-bold text-teal-600 dark:text-teal-400 hover:text-teal-800 dark:hover:text-teal-300 transition-colors z-50 relative">
               ← Back to Blog
             </Link>
+          ) : isInfoPage ? (
+            <button
+              onClick={() => router.back()}
+              className="text-xl font-bold text-teal-600 dark:text-teal-400 hover:text-teal-800 dark:hover:text-teal-300 transition-colors z-50 relative"
+            >
+              ← Back
+            </button>
           ) : (
             <Link href="/" className="flex items-center gap-2 text-2xl font-bold text-teal-600 dark:text-teal-400 hover:text-teal-800 dark:hover:text-teal-300 transition-colors z-50 relative">
               <img src="/icon.png" alt="Logo" className="w-8 h-8" />
-                {blogConfig.title}
-              </Link>
+              {blogConfig.title}
+            </Link>
           )}
-          
+
           {/* Desktop Navigation */}
           <nav className="hidden min-[520px]:block">
             <ul className="flex space-x-4 relative">
               {navLinks.map((link) => {
                 const isActive = pathname.startsWith(link.href);
-                
+
                 return (
                   <li key={link.label}>
-                    <Link 
-                      href={link.href} 
+                    <Link
+                      href={link.href}
                       className={cn(
                         "relative font-bold text-lg px-4 py-2 inline-block transition-colors rounded-xl",
-                        isActive 
-                          ? "text-teal-700 dark:text-teal-300" 
+                        isActive
+                          ? "text-teal-700 dark:text-teal-300"
                           : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100"
                       )}
                     >
@@ -90,7 +99,7 @@ export default function Navbar() {
           </nav>
 
           {/* Mobile Menu Button */}
-          <button 
+          <button
             className="min-[520px]:hidden p-2 text-slate-600 dark:text-slate-300 hover:text-teal-600 dark:hover:text-teal-400 transition-colors z-50 relative"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle menu"
@@ -121,15 +130,15 @@ export default function Navbar() {
               <ul className="flex flex-col space-y-2">
                 {navLinks.map((link) => {
                   const isActive = pathname.startsWith(link.href);
-                  
+
                   return (
                     <li key={link.label}>
-                      <Link 
-                        href={link.href} 
+                      <Link
+                        href={link.href}
                         className={cn(
                           "block font-bold text-lg px-4 py-3 transition-colors rounded-xl",
-                          isActive 
-                            ? "text-teal-700 dark:text-teal-300 bg-teal-50 dark:bg-teal-900/30" 
+                          isActive
+                            ? "text-teal-700 dark:text-teal-300 bg-teal-50 dark:bg-teal-900/30"
                             : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-white/50 dark:hover:bg-white/10"
                         )}
                       >

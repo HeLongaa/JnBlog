@@ -28,12 +28,15 @@ export default async function Home() {
           <p className="text-lg text-slate-700 dark:text-slate-300 mb-8">
             Welcome to my Blog. 🌱
           </p>
-          
+
           <p className="text-slate-500 dark:text-slate-400 mb-6 text-sm">
             分享 <a className="font-bold text-teal-600 dark:text-teal-400 hover:text-teal-800 dark:hover:text-teal-300">技术</a> 和 <a className="font-bold text-teal-600 dark:text-teal-400 hover:text-teal-800 dark:hover:text-teal-300">生活</a> 的点滴。
           </p>
           <p className="text-slate-500 dark:text-slate-400 mb-6 text-sm">
-            如果本站内容对你有帮助，可以<a href="/feed.xml" className="font-bold text-teal-600 dark:text-teal-400 hover:text-teal-800 dark:hover:text-teal-300">订阅</a>我的博客。
+            如果本站内容对你有帮助，可以<a href="/feed.xml" className="font-medium text-teal-600 dark:text-teal-400 hover:text-teal-800 dark:hover:text-teal-300 inline-flex items-center no-underline">订阅<span className="ml-1 text-xs">↗</span></a>我的博客。
+          </p>
+          <p className="text-slate-500 dark:text-slate-400 mb-6 text-sm">
+            本站针对大屏优化，使用<a className="font-bold text-teal-600 dark:text-teal-400 hover:text-teal-800 dark:hover:text-teal-300">Chrome</a>获取最佳效果。
           </p>
           <div className="flex space-x-3">
             {/* <a href="#" className="bg-slate-500 dark:bg-slate-700 p-2 rounded-full text-white hover:bg-slate-700 dark:hover:bg-slate-500 transition-colors"><Twitter size={20} fill="currentColor" className="stroke-none" /></a> */}
@@ -45,14 +48,14 @@ export default async function Home() {
           </div>
         </div>
         <div className="hidden md:flex md:w-1/2 justify-center mt-10 md:mt-0 relative translate-x-10">
-            <Image
-              src="/avatar.png"
-              alt="HeLong Avatar"
-              width={320}
-              height={320}
-              priority
-              className="drop-shadow-2xl hover:scale-105 transition-transform duration-300"
-            />
+          <Image
+            src="/avatar.png"
+            alt="HeLong Avatar"
+            width={320}
+            height={320}
+            priority
+            className="drop-shadow-2xl hover:scale-105 transition-transform duration-300"
+          />
         </div>
       </section>
 

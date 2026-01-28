@@ -46,6 +46,14 @@ npm run dev
 npm run build
 ```
 
+### 添加文章
+
+运行以下命令添加文章：
+
+```bash
+npm run post
+```
+
 ### 启动生产服务器
 
 ```bash
@@ -60,6 +68,20 @@ npm start
 - 📱 移动端友好的导航
 - 🎨 现代化的UI设计
 - 🚀 高性能，基于Next.js
+
+## 部署和构建
+
+### 部署到Vercel
+
+1. 注册Vercel账号并登录
+2. 点击"New Project"，选择导入你的JnBlog仓库
+3. 点击"Deploy"，Vercel会自动构建并部署你的博客
+
+### 部署到EdgeOne
+
+1. 注册EdgeOne账号并登录
+2. 点击"New Project"，选择导入你的JnBlog仓库
+3. 点击"Deploy"，EdgeOne会自动构建并部署你的博客
 
 ## 许可证
 
