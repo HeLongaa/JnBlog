@@ -10,13 +10,13 @@ import ImageLightbox from "@/components/ImageLightbox";
 const components = {
   h1: (props: any) => (
     <div className="text-center mb-16">
-        <h1 className="text-5xl font-extrabold text-teal-800 dark:text-teal-400 mb-6 tracking-tight" {...props} />
-        <p className="text-slate-600 dark:text-slate-400 text-xl font-medium">友情链接</p>
+      <h1 className="text-5xl font-extrabold text-teal-800 dark:text-teal-400 mb-6 tracking-tight" {...props} />
+      <p className="text-slate-600 dark:text-slate-400 text-xl font-medium">友情链接</p>
     </div>
   ),
   blockquote: (props: any) => (
     <div className="bg-slate-50 dark:bg-slate-900 py-3 px-4 rounded-sm my-4 text-slate-700 dark:text-slate-300 leading-relaxed font-serif not-italic">
-        {props.children}
+      {props.children}
     </div>
   ),
   h2: (props: any) => (
@@ -28,16 +28,16 @@ const components = {
   p: (props: any) => {
     // Check if the paragraph contains an ImageLightbox (which is a div)
     const children = React.Children.toArray(props.children);
-    const hasImage = children.some((child: any) => 
-      child?.type === ImageLightbox || 
-      child?.props?.mdxType === 'img' || 
+    const hasImage = children.some((child: any) =>
+      child?.type === ImageLightbox ||
+      child?.props?.mdxType === 'img' ||
       (child?.props && typeof child.props === 'object' && 'src' in child.props && 'alt' in child.props)
     );
 
     if (hasImage) {
       return <>{props.children}</>;
     }
-    
+
     return <p className="mb-6 text-slate-700 dark:text-slate-300 leading-relaxed" {...props} />;
   },
   a: (props: any) => (
