@@ -17,7 +17,7 @@
     "katex": "^0.16.28",
     "lucide-react": "^0.563.0",
     "next": "latest",
-    "next-mdx-remote": "^5.0.0",
+    "next-mdx-remote": "^6.0.0",
     "react": "latest",
     "react-dom": "latest",
     "rehype-katex": "^7.0.1",
